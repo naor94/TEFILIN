@@ -23,6 +23,7 @@ import {
   Volume2,
 } from 'lucide-react-native';
 import { Colors, Shadows } from '../theme/colors';
+import { RTL } from '../theme/layout';
 import { StorageService } from '../services/storageService';
 import { ReminderSettings } from '../types';
 
@@ -344,11 +345,11 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   header: {
-    alignItems: 'flex-end',
+    alignItems: RTL.alignRight,
     gap: 4,
   },
   headerBadge: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 5,
     backgroundColor: 'rgba(255, 223, 152, 0.45)',
@@ -367,13 +368,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik_700Bold',
     fontSize: 24,
     color: Colors.primary,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   subtitle: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 13,
     color: Colors.onSurfaceVariant,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   card: {
     backgroundColor: Colors.surfaceCard,
@@ -399,18 +400,18 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
   },
   cardHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     gap: 10,
   },
   cardTitleGroup: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: RTL.alignRight,
     gap: 2,
   },
   cardTitleRow: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 6,
   },
@@ -418,18 +419,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 16,
     color: Colors.primary,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   cardDesc: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 12,
     color: Colors.onSurfaceVariant,
-    textAlign: 'right',
     marginTop: 2,
     lineHeight: 18,
+    ...RTL.textRight,
   },
   timePickerBox: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: Colors.surfaceContainerLow,
@@ -440,7 +441,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.border,
   },
   timePickerLeft: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 6,
   },
@@ -448,9 +449,10 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_500Medium',
     fontSize: 13,
     color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
   },
   timeDisplayBadge: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 6,
     backgroundColor: Colors.surfaceCard,
@@ -470,7 +472,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   daysHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -478,9 +480,10 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_500Medium',
     fontSize: 12,
     color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
   },
   daysActiveIndicator: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 4,
   },
@@ -490,7 +493,7 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
   },
   daysGrid: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     justifyContent: 'space-between',
     gap: 6,
   },
@@ -534,7 +537,7 @@ const styles = StyleSheet.create({
     color: Colors.outline,
   },
   shabbatNote: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 5,
     marginTop: 4,
@@ -543,10 +546,10 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_400Regular',
     fontSize: 11,
     color: Colors.outline,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   subCardBox: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 10,
     backgroundColor: Colors.surfaceContainerLow,
@@ -574,28 +577,28 @@ const styles = StyleSheet.create({
   },
   subCardContent: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: RTL.alignRight,
   },
   subCardTitle: {
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 13,
     color: Colors.primary,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   subCardSubtitle: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 11,
     color: Colors.onSurfaceVariant,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   safetyHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 8,
   },
   recommendedBadge: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 4,
     backgroundColor: 'rgba(254, 206, 87, 0.35)',
@@ -609,7 +612,7 @@ const styles = StyleSheet.create({
     color: Colors.onSecondaryContainer,
   },
   safetyFootnote: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 6,
     backgroundColor: Colors.surfaceContainer,
@@ -622,7 +625,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: Colors.onSurfaceVariant,
     flex: 1,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   actionButtons: {
     marginTop: 8,
@@ -630,7 +633,7 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     backgroundColor: Colors.primary,
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,

@@ -17,6 +17,7 @@ import {
   Shield,
 } from 'lucide-react-native';
 import { Colors, Shadows } from '../theme/colors';
+import { RTL } from '../theme/layout';
 import { StorageService } from '../services/storageService';
 import { Dedication, TefillinStats } from '../types';
 
@@ -369,26 +370,28 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   header: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   headerTextGroup: {
-    alignItems: 'flex-end',
+    alignItems: RTL.alignRight,
   },
   title: {
     fontFamily: 'Rubik_700Bold',
     fontSize: 22,
     color: Colors.primary,
+    ...RTL.textRight,
   },
   subtitle: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 12,
     color: Colors.onSurfaceVariant,
     marginTop: 2,
+    ...RTL.textRight,
   },
   shareButton: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 5,
     backgroundColor: Colors.secondaryFixed,
@@ -403,7 +406,7 @@ const styles = StyleSheet.create({
     color: Colors.onSecondaryContainer,
   },
   statsRow: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     gap: 8,
   },
   statCard: {
@@ -500,7 +503,7 @@ const styles = StyleSheet.create({
     ...Shadows.card,
   },
   calendarHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -508,7 +511,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   calendarTitleGroup: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 8,
   },
@@ -524,11 +527,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 14,
     color: Colors.primary,
+    ...RTL.textRight,
   },
   calendarSub: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 11,
     color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
   },
   hebrewMonthPill: {
     backgroundColor: Colors.surfaceContainerLow,
@@ -542,7 +547,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
   weekDaysHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     justifyContent: 'space-between',
   },
   weekDayLabel: {
@@ -553,7 +558,7 @@ const styles = StyleSheet.create({
     color: Colors.onSurfaceVariant,
   },
   calendarGrid: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     flexWrap: 'wrap',
     gap: 5,
   },
@@ -612,14 +617,14 @@ const styles = StyleSheet.create({
     bottom: 3,
   },
   legend: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     justifyContent: 'space-between',
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: Colors.border,
     paddingTop: 8,
   },
   legendItem: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 4,
   },
@@ -659,12 +664,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
   },
   dedicationHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   dedicationTitleGroup: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 8,
   },
@@ -680,11 +685,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 14,
     color: Colors.primary,
+    ...RTL.textRight,
   },
   dedicationSub: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 11,
     color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
   },
   activeDedicationBadge: {
     backgroundColor: Colors.surfaceContainer,
@@ -706,7 +713,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.border,
   },
   activeDedicationTop: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -714,6 +721,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_700Bold',
     fontSize: 12,
     color: Colors.secondary,
+    ...RTL.textRight,
   },
   editDedicationText: {
     fontFamily: 'NotoSans_500Medium',
@@ -725,22 +733,22 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 15,
     color: Colors.primary,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   activeDedicationVerse: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 11,
     color: Colors.onSurfaceVariant,
-    textAlign: 'right',
     fontStyle: 'italic',
+    ...RTL.textRight,
   },
   quickPillsRow: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     gap: 6,
     flexWrap: 'wrap',
   },
   pillBtn: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 4,
     paddingHorizontal: 12,

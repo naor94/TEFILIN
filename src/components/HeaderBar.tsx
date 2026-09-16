@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Calendar, MapPin } from 'lucide-react-native';
 import { Colors } from '../theme/colors';
+import { RTL } from '../theme/layout';
 
 interface HeaderBarProps {
   locationName?: string;
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     zIndex: 40,
   },
   inner: {
-    flexDirection: 'row-reverse', // RTL Support
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   locationButton: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 5,
     paddingVertical: 6,
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_600SemiBold',
     fontSize: 13,
     color: Colors.onSurface,
+    ...RTL.textRight,
   },
   centerTitleContainer: {
     alignItems: 'center',
@@ -96,3 +98,4 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.surfaceContainerLow,
   },
 });
+

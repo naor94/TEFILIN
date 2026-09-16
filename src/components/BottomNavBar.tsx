@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Bell, BookOpen, Calendar, History } from 'lucide-react-native';
 import { Colors } from '../theme/colors';
+import { RTL } from '../theme/layout';
 
 export type TabKey = 'today' | 'order' | 'reminders' | 'history';
 
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   navBar: {
-    flexDirection: 'row-reverse', // RTL Support
+    flexDirection: RTL.row, // Dynamic RTL Support
     justifyContent: 'space-around',
     alignItems: 'center',
     maxWidth: 540,

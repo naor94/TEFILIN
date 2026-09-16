@@ -22,6 +22,7 @@ import {
   Sun,
 } from 'lucide-react-native';
 import { Colors, Shadows } from '../theme/colors';
+import { RTL } from '../theme/layout';
 import { calculateZmanim } from '../services/zmanimService';
 import { StorageService } from '../services/storageService';
 import { ZmanimTimes } from '../types';
@@ -287,7 +288,7 @@ const styles = StyleSheet.create({
     gap: 18,
   },
   metaBar: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: Colors.surfaceContainerLow,
@@ -298,21 +299,23 @@ const styles = StyleSheet.create({
     borderColor: Colors.border,
   },
   metaDate: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
   },
   metaDateLabel: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 13,
     color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
   },
   metaDateValue: {
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 13,
     color: Colors.primary,
+    ...RTL.textRight,
   },
   streakBadge: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 4,
     backgroundColor: 'rgba(255, 223, 152, 0.45)',
@@ -348,13 +351,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondaryContainer,
   },
   heroHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     marginBottom: 12,
   },
   heroTitleBlock: {
-    alignItems: 'flex-end',
+    alignItems: RTL.alignRight,
     flex: 1,
   },
   tagMitzvah: {
@@ -368,13 +371,13 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_700Bold',
     fontSize: 10,
     color: Colors.secondary,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   heroTitle: {
     fontFamily: 'Rubik_700Bold',
     fontSize: 22,
     color: Colors.primary,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   statusIconBubble: {
     width: 44,
@@ -400,12 +403,12 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_500Medium',
     fontSize: 13,
     color: Colors.onSurfaceVariant,
-    textAlign: 'right',
     fontStyle: 'italic',
+    ...RTL.textRight,
   },
   ctaButton: {
     backgroundColor: Colors.primary,
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
@@ -425,19 +428,19 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_600SemiBold',
     fontSize: 12,
     color: Colors.secondary,
-    textAlign: 'center',
+    ...RTL.textCenter,
     marginTop: 10,
   },
   section: {
     gap: 10,
   },
   sectionHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   sectionTitleRow: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 6,
   },
@@ -445,14 +448,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 15,
     color: Colors.primary,
+    ...RTL.textRight,
   },
   sectionSubtitle: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 11,
     color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
   },
   zmanimGrid: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     flexWrap: 'wrap',
     gap: 10,
   },
@@ -471,7 +476,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFEFB',
   },
   zmanCardTop: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -479,6 +484,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_500Medium',
     fontSize: 10,
     color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
   },
   dotIndicator: {
     width: 7,
@@ -490,14 +496,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik_700Bold',
     fontSize: 20,
     color: Colors.primary,
-    textAlign: 'right',
+    ...RTL.textRight,
     marginTop: 4,
   },
   zmanLabel: {
     fontFamily: 'NotoSans_600SemiBold',
     fontSize: 12,
     color: Colors.onSurface,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   countdownBadge: {
     marginTop: 6,
@@ -517,7 +523,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   quickCard: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: Colors.surfaceCard,
@@ -527,7 +533,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.border,
   },
   quickCardContent: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 10,
   },
@@ -548,20 +554,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   quickTexts: {
-    alignItems: 'flex-end',
+    alignItems: RTL.alignRight,
   },
   quickTitle: {
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 14,
     color: Colors.primary,
+    ...RTL.textRight,
   },
   quickSub: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 11,
     color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
   },
   pninatCard: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'flex-start',
     gap: 10,
     backgroundColor: Colors.surfaceCard,
@@ -578,27 +586,28 @@ const styles = StyleSheet.create({
   },
   pninatContent: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: RTL.alignRight,
   },
   pninatCategory: {
     fontFamily: 'NotoSans_700Bold',
     fontSize: 10,
     color: Colors.secondary,
     textTransform: 'uppercase',
+    ...RTL.textRight,
   },
   pninatQuote: {
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 14,
     color: Colors.primary,
-    textAlign: 'right',
     marginTop: 3,
     lineHeight: 20,
+    ...RTL.textRight,
   },
   pninatSource: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 11,
     color: Colors.onSurfaceVariant,
-    textAlign: 'right',
     marginTop: 2,
+    ...RTL.textRight,
   },
 });

@@ -17,6 +17,7 @@ import {
   Volume2,
 } from 'lucide-react-native';
 import { Colors, Shadows } from '../theme/colors';
+import { RTL } from '../theme/layout';
 import { StorageService } from '../services/storageService';
 import { Nusach } from '../types';
 
@@ -356,26 +357,28 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   topHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingBottom: 6,
   },
   topTitleBox: {
-    alignItems: 'flex-end',
+    alignItems: RTL.alignRight,
   },
   topTitle: {
     fontFamily: 'Rubik_700Bold',
     fontSize: 22,
     color: Colors.primary,
+    ...RTL.textRight,
   },
   topSub: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 12,
     color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
   },
   audioButton: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 5,
     backgroundColor: 'rgba(255, 223, 152, 0.45)',
@@ -391,7 +394,7 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
   },
   nusachSelector: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     backgroundColor: Colors.surfaceContainerHigh,
     padding: 3,
     borderRadius: 12,
@@ -419,7 +422,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   kavanahBanner: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'flex-start',
     gap: 10,
     backgroundColor: Colors.surfaceContainerLow,
@@ -439,20 +442,20 @@ const styles = StyleSheet.create({
   },
   kavanahContent: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: RTL.alignRight,
   },
   kavanahTitle: {
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 13,
     color: Colors.primary,
+    ...RTL.textRight,
   },
   kavanahText: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 11.5,
     color: Colors.onSurfaceVariant,
-    textAlign: 'right',
-    marginTop: 2,
     lineHeight: 17,
+    ...RTL.textRight,
   },
   stepCard: {
     backgroundColor: Colors.surfaceCard,
@@ -464,7 +467,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   stepHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -472,7 +475,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   stepTitleRow: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 8,
   },
@@ -493,6 +496,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik_700Bold',
     fontSize: 16,
     color: Colors.primary,
+    ...RTL.textRight,
   },
   stepTag: {
     backgroundColor: 'rgba(255, 223, 152, 0.35)',
@@ -509,13 +513,14 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_400Regular',
     fontSize: 11,
     color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
   },
   stepDesc: {
     fontFamily: 'NotoSans_400Regular',
     fontSize: 13,
     color: Colors.onSurfaceVariant,
-    textAlign: 'right',
     lineHeight: 20,
+    ...RTL.textRight,
   },
   blessingBox: {
     backgroundColor: Colors.surfaceContainerLow,
@@ -532,7 +537,7 @@ const styles = StyleSheet.create({
     lineHeight: 26,
   },
   warningBox: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     gap: 6,
     backgroundColor: 'rgba(255, 223, 152, 0.25)',
@@ -546,7 +551,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: Colors.secondary,
     flex: 1,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   verseBox: {
     backgroundColor: Colors.surfaceContainerLow,
@@ -574,13 +579,13 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_600SemiBold',
     fontSize: 12,
     color: Colors.onSurfaceVariant,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   edotDesc: {
     fontFamily: 'NotoSans_500Medium',
     fontSize: 13,
     color: Colors.primary,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   ashkenazBox: {
     gap: 8,
@@ -589,7 +594,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_600SemiBold',
     fontSize: 12,
     color: Colors.secondary,
-    textAlign: 'right',
+    ...RTL.textRight,
   },
   baruchShemBox: {
     backgroundColor: Colors.surfaceContainer,
@@ -624,7 +629,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   shemaHeader: {
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -633,6 +638,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: Colors.onSurfaceVariant,
     marginTop: 2,
+    ...RTL.textRight,
   },
   shemaContent: {
     backgroundColor: Colors.surfaceContainerLow,
@@ -666,12 +672,12 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_400Regular',
     fontSize: 13.5,
     color: Colors.primary,
-    textAlign: 'justify',
     lineHeight: 22,
+    ...RTL.textRight,
   },
   completeBtn: {
     backgroundColor: Colors.primary,
-    flexDirection: 'row-reverse',
+    flexDirection: RTL.row,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
