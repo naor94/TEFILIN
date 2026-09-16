@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  Modal,
   ScrollView,
   StyleSheet,
   Switch,
@@ -16,11 +17,14 @@ import {
   Edit3,
   Hourglass,
   Info,
+  Minus,
   Music,
+  Plus,
   PlusCircle,
   ShieldCheck,
   Sunrise,
   Volume2,
+  X,
 } from 'lucide-react-native';
 import { Colors, Shadows } from '../theme/colors';
 import { RTL } from '../theme/layout';
@@ -41,6 +45,9 @@ export const RemindersScreen: React.FC = () => {
   });
 
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
+  const [isTimePickerVisible, setIsTimePickerVisible] = useState<boolean>(false);
+  const [pickerHours, setPickerHours] = useState<number>(7);
+  const [pickerMinutes, setPickerMinutes] = useState<number>(30);
 
   useEffect(() => {
     loadSettings();
@@ -49,6 +56,46 @@ export const RemindersScreen: React.FC = () => {
   const loadSettings = async () => {
     const data = await StorageService.getReminderSettings();
     setSettings(data);
+  };
+
+  const openTimePicker = () => {
+    const parts = settings.morningTime.split(':');
+    if (parts.length === 2) {
+      setPickerHours(parseInt(parts[0], 10) || 7);
+      setPickerMinutes(parseInt(parts[1], 10) || 30);
+    }
+    setIsTimePickerVisible(true);
+  };
+
+  const savePickedTime = () => {
+    const h = pickerHours.toString().padStart(2, '0');
+    const m = pickerMinutes.toString().padStart(2, '0');
+    const newTime = `${h}:${m}`;
+    const updated = { ...settings, morningTime: newTime };
+    setSettings(updated);
+    setIsTimePickerVisible(false);
+    StorageService.saveReminderSettings(updated);
+  };
+
+  const adjustHours = (delta: number) => {
+    setPickerHours((prev) => {
+      let next = (prev + delta) % 24;
+      if (next < 0) next = 23;
+      return next;
+    });
+  };
+
+  const adjustMinutes = (delta: number) => {
+    setPickerMinutes((prev) => {
+      let next = (prev + delta) % 60;
+      if (next < 0) next = 55;
+      return next;
+    });
+  };
+
+  const setPresetTime = (h: number, m: number) => {
+    setPickerHours(h);
+    setPickerMinutes(m);
   };
 
   const handleDayToggle = (dayIndex: number) => {
@@ -67,6 +114,39 @@ export const RemindersScreen: React.FC = () => {
       : [...currentDays, dayIndex];
 
     setSettings({ ...settings, activeDays: updatedDays });
+  };
+
+  const handleSoundToggle = () => {
+    const SOUND_OPTIONS = ['ניגון עדין / שופר', 'פעמון בית כנסת', 'ניגון חסידי שקט', 'רטט בלבד'];
+    const currentIndex = SOUND_OPTIONS.indexOf(settings.sound);
+    const next = SOUND_OPTIONS[(currentIndex + 1) % SOUND_OPTIONS.length];
+    setSettings((prev) => {
+      const updated = { ...prev, sound: next };
+      StorageService.saveReminderSettings(updated);
+      return updated;
+    });
+  };
+
+  const handleSnoozeToggle = () => {
+    const SNOOZE_OPTIONS = [5, 10, 15, 20, 30];
+    const currentIndex = SNOOZE_OPTIONS.indexOf(settings.snoozeMinutes);
+    const next = SNOOZE_OPTIONS[(currentIndex + 1) % SNOOZE_OPTIONS.length];
+    setSettings((prev) => {
+      const updated = { ...prev, snoozeMinutes: next };
+      StorageService.saveReminderSettings(updated);
+      return updated;
+    });
+  };
+
+  const handleZmanimOffsetToggle = () => {
+    const ZMANIM_OFFSETS = [15, 30, 45, 60];
+    const currentIndex = ZMANIM_OFFSETS.indexOf(settings.zmanimOffsetMinutes);
+    const next = ZMANIM_OFFSETS[(currentIndex + 1) % ZMANIM_OFFSETS.length];
+    setSettings((prev) => {
+      const updated = { ...prev, zmanimOffsetMinutes: next };
+      StorageService.saveReminderSettings(updated);
+      return updated;
+    });
   };
 
   const handleSave = async () => {
@@ -124,31 +204,20 @@ export const RemindersScreen: React.FC = () => {
         </View>
 
         {/* Time Display Picker Box */}
-        <View style={styles.timePickerBox}>
+        <TouchableOpacity
+          style={styles.timePickerBox}
+          onPress={openTimePicker}
+          activeOpacity={0.7}
+        >
           <View style={styles.timePickerLeft}>
             <Clock size={17} color={Colors.primary} />
-            <Text style={styles.timePickerLabel}>זמן התראה מתוזמן</Text>
+            <Text style={styles.timePickerLabel}>זמן התראה מתוזמן (לחץ לעריכה)</Text>
           </View>
-          <TouchableOpacity
-            style={styles.timeDisplayBadge}
-            onPress={() => {
-              Alert.prompt
-                ? Alert.prompt(
-                    'שינוי שעת בוקר',
-                    'הזן שעה בפורמט שעות:דקות (לדוגמה 07:15):',
-                    (text) => {
-                      if (text) setSettings({ ...settings, morningTime: text });
-                    },
-                    'plain-text',
-                    settings.morningTime
-                  )
-                : Alert.alert('שעת בוקר', `השעה הנוכחית היא ${settings.morningTime}`);
-            }}
-          >
+          <View style={styles.timeDisplayBadge}>
             <Text style={styles.timeText}>{settings.morningTime}</Text>
             <Edit3 size={14} color={Colors.onSurfaceVariant} />
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
 
         {/* Repetition Days Grid */}
         <View style={styles.daysSection}>
@@ -225,19 +294,24 @@ export const RemindersScreen: React.FC = () => {
           />
         </View>
 
-        <View style={styles.subCardBox}>
+        <TouchableOpacity
+          style={styles.subCardBox}
+          onPress={handleZmanimOffsetToggle}
+          activeOpacity={0.7}
+        >
           <View style={styles.subCardIconGold}>
             <Hourglass size={16} color={Colors.onSecondaryContainer} />
           </View>
           <View style={styles.subCardContent}>
             <Text style={styles.subCardTitle}>
-              30 דקות לפני סוף זמן תפילה
+              {settings.zmanimOffsetMinutes} דקות לפני סוף זמן תפילה (לחץ לשינוי)
             </Text>
             <Text style={styles.subCardSubtitle}>
               היום: שעה 08:15 (לפי הגר״א)
             </Text>
           </View>
-        </View>
+          <Edit3 size={14} color={Colors.onSurfaceVariant} />
+        </TouchableOpacity>
       </View>
 
       {/* CARD 3: SUNSET SAFETY NET (Last call before sunset) */}
@@ -288,29 +362,38 @@ export const RemindersScreen: React.FC = () => {
         </Text>
 
         {/* Sound Selection */}
-        <View style={styles.subCardBox}>
+        <TouchableOpacity
+          style={styles.subCardBox}
+          onPress={handleSoundToggle}
+          activeOpacity={0.7}
+        >
           <View style={styles.subCardIconBlue}>
             <Music size={16} color={Colors.primary} />
           </View>
           <View style={styles.subCardContent}>
-            <Text style={styles.subCardSubtitle}>צליל תזכורת נבחר</Text>
+            <Text style={styles.subCardSubtitle}>צליל תזכורת נבחר (לחץ להחלפה)</Text>
             <Text style={styles.subCardTitle}>{settings.sound}</Text>
           </View>
           <Volume2 size={18} color={Colors.onSurfaceVariant} />
-        </View>
+        </TouchableOpacity>
 
         {/* Snooze */}
-        <View style={[styles.subCardBox, { marginTop: 8 }]}>
+        <TouchableOpacity
+          style={[styles.subCardBox, { marginTop: 8 }]}
+          onPress={handleSnoozeToggle}
+          activeOpacity={0.7}
+        >
           <View style={styles.subCardIconBlue}>
             <Clock size={16} color={Colors.primary} />
           </View>
           <View style={styles.subCardContent}>
-            <Text style={styles.subCardSubtitle}>נודניק חכם (Snooze)</Text>
+            <Text style={styles.subCardSubtitle}>נודניק חכם (לחץ לשינוי)</Text>
             <Text style={styles.subCardTitle}>
               הזכר לי שוב בעוד {settings.snoozeMinutes} דקות
             </Text>
           </View>
-        </View>
+          <Edit3 size={14} color={Colors.onSurfaceVariant} />
+        </TouchableOpacity>
       </View>
 
       {/* ACTION BUTTONS */}
@@ -326,6 +409,133 @@ export const RemindersScreen: React.FC = () => {
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* TIME PICKER MODAL */}
+      <Modal
+        visible={isTimePickerVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setIsTimePickerVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            {/* Modal Header */}
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>בחירת שעת תזכורת בוקר</Text>
+              <TouchableOpacity
+                onPress={() => setIsTimePickerVisible(false)}
+                style={styles.modalCloseBtn}
+              >
+                <X size={20} color={Colors.onSurfaceVariant} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Time Adjuster Wheels */}
+            <View style={styles.pickerWheelsRow}>
+              {/* Hours Column */}
+              <View style={styles.pickerColumn}>
+                <Text style={styles.columnLabel}>שעה</Text>
+                <TouchableOpacity
+                  onPress={() => adjustHours(1)}
+                  style={styles.adjustBtn}
+                  activeOpacity={0.7}
+                >
+                  <Plus size={20} color={Colors.primary} />
+                </TouchableOpacity>
+                <View style={styles.timeDigitBox}>
+                  <Text style={styles.timeDigitText}>
+                    {pickerHours.toString().padStart(2, '0')}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => adjustHours(-1)}
+                  style={styles.adjustBtn}
+                  activeOpacity={0.7}
+                >
+                  <Minus size={20} color={Colors.primary} />
+                </TouchableOpacity>
+              </View>
+
+              <Text style={styles.timeColon}>:</Text>
+
+              {/* Minutes Column */}
+              <View style={styles.pickerColumn}>
+                <Text style={styles.columnLabel}>דקות</Text>
+                <TouchableOpacity
+                  onPress={() => adjustMinutes(5)}
+                  style={styles.adjustBtn}
+                  activeOpacity={0.7}
+                >
+                  <Plus size={20} color={Colors.primary} />
+                </TouchableOpacity>
+                <View style={styles.timeDigitBox}>
+                  <Text style={styles.timeDigitText}>
+                    {pickerMinutes.toString().padStart(2, '0')}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => adjustMinutes(-5)}
+                  style={styles.adjustBtn}
+                  activeOpacity={0.7}
+                >
+                  <Minus size={20} color={Colors.primary} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Quick Presets */}
+            <Text style={styles.presetsLabel}>שעות נפוצות:</Text>
+            <View style={styles.presetsRow}>
+              {[
+                { h: 6, m: 0, label: '06:00' },
+                { h: 6, m: 30, label: '06:30' },
+                { h: 7, m: 0, label: '07:00' },
+                { h: 7, m: 30, label: '07:30' },
+                { h: 8, m: 0, label: '08:00' },
+                { h: 8, m: 30, label: '08:30' },
+              ].map((p) => {
+                const isSelected = pickerHours === p.h && pickerMinutes === p.m;
+                return (
+                  <TouchableOpacity
+                    key={p.label}
+                    onPress={() => setPresetTime(p.h, p.m)}
+                    style={[
+                      styles.presetBadge,
+                      isSelected && styles.presetBadgeActive,
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.presetBadgeText,
+                        isSelected && styles.presetBadgeTextActive,
+                      ]}
+                    >
+                      {p.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            {/* Modal Actions */}
+            <View style={styles.modalActions}>
+              <TouchableOpacity
+                onPress={savePickedTime}
+                style={styles.modalSaveBtn}
+                activeOpacity={0.88}
+              >
+                <Text style={styles.modalSaveText}>שמור שעה ✓</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setIsTimePickerVisible(false)}
+                style={styles.modalCancelBtn}
+              >
+                <Text style={styles.modalCancelText}>ביטול</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
@@ -647,5 +857,148 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik_600SemiBold',
     fontSize: 16,
     color: '#FFFFFF',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(15, 28, 49, 0.65)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    backgroundColor: Colors.surfaceCard,
+    borderRadius: 22,
+    padding: 20,
+    width: '100%',
+    maxWidth: 380,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    ...Shadows.cardElevated,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: Colors.border,
+    paddingBottom: 12,
+  },
+  modalTitle: {
+    fontFamily: 'Rubik_700Bold',
+    fontSize: 18,
+    color: Colors.primary,
+    ...RTL.textRight,
+  },
+  modalCloseBtn: {
+    padding: 6,
+    borderRadius: 8,
+    backgroundColor: Colors.surfaceContainerLow,
+  },
+  pickerWheelsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 16,
+    marginVertical: 18,
+  },
+  pickerColumn: {
+    alignItems: 'center',
+    gap: 8,
+  },
+  columnLabel: {
+    fontFamily: 'NotoSans_500Medium',
+    fontSize: 12,
+    color: Colors.onSurfaceVariant,
+  },
+  adjustBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: Colors.surfaceContainerLow,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  timeDigitBox: {
+    width: 76,
+    height: 64,
+    borderRadius: 14,
+    backgroundColor: Colors.surfaceContainerLow,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: 'rgba(254, 206, 87, 0.8)',
+  },
+  timeDigitText: {
+    fontFamily: 'Rubik_700Bold',
+    fontSize: 32,
+    color: Colors.primary,
+  },
+  timeColon: {
+    fontFamily: 'Rubik_700Bold',
+    fontSize: 36,
+    color: Colors.primary,
+    marginTop: 18,
+  },
+  presetsLabel: {
+    fontFamily: 'NotoSans_600SemiBold',
+    fontSize: 12,
+    color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
+    marginBottom: 8,
+  },
+  presetsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    justifyContent: 'center',
+    marginBottom: 18,
+  },
+  presetBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    backgroundColor: Colors.surfaceContainerLow,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  presetBadgeActive: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
+  },
+  presetBadgeText: {
+    fontFamily: 'NotoSans_600SemiBold',
+    fontSize: 12,
+    color: Colors.primary,
+  },
+  presetBadgeTextActive: {
+    color: '#FFFFFF',
+  },
+  modalActions: {
+    gap: 8,
+  },
+  modalSaveBtn: {
+    backgroundColor: Colors.primary,
+    paddingVertical: 13,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Shadows.card,
+  },
+  modalSaveText: {
+    fontFamily: 'Rubik_600SemiBold',
+    fontSize: 15,
+    color: '#FFFFFF',
+  },
+  modalCancelBtn: {
+    paddingVertical: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalCancelText: {
+    fontFamily: 'NotoSans_500Medium',
+    fontSize: 13,
+    color: Colors.onSurfaceVariant,
   },
 });

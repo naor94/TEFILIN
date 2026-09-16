@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {
   Calendar as CalendarIcon,
+  Check,
   Flame,
   Heart,
   Infinity as InfinityIcon,
   LineChart,
   Share2,
   Shield,
+  X,
 } from 'lucide-react-native';
 import { Colors, Shadows } from '../theme/colors';
 import { RTL } from '../theme/layout';
@@ -37,6 +41,9 @@ export const HistoryScreen: React.FC = () => {
     active: true,
   });
 
+  const [isDedicationModalVisible, setIsDedicationModalVisible] = useState<boolean>(false);
+  const [tempDedicationName, setTempDedicationName] = useState<string>('');
+
   useEffect(() => {
     loadData();
   }, []);
@@ -46,6 +53,20 @@ export const HistoryScreen: React.FC = () => {
     setStats(s);
     const d = await StorageService.getDedication();
     setDedication(d);
+  };
+
+  const openDedicationModal = () => {
+    setTempDedicationName(dedication.name);
+    setIsDedicationModalVisible(true);
+  };
+
+  const saveDedicationName = () => {
+    if (tempDedicationName.trim()) {
+      const updated: Dedication = { ...dedication, name: tempDedicationName.trim() };
+      setDedication(updated);
+      StorageService.saveDedication(updated);
+    }
+    setIsDedicationModalVisible(false);
   };
 
   const handleShare = () => {
@@ -251,25 +272,7 @@ export const HistoryScreen: React.FC = () => {
                 ? 'לעילוי נשמת:'
                 : 'להגנת הלוחמים:'}
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                Alert.prompt
-                  ? Alert.prompt(
-                      'עריכת שם ההקדשה',
-                      'הזן שם מלא (למשל: יוסף בן רחל):',
-                      (name) => {
-                        if (name) {
-                          const updated = { ...dedication, name };
-                          setDedication(updated);
-                          StorageService.saveDedication(updated);
-                        }
-                      },
-                      'plain-text',
-                      dedication.name
-                    )
-                  : Alert.alert('הקדשה פעילה', dedication.name);
-              }}
-            >
+            <TouchableOpacity onPress={openDedicationModal} activeOpacity={0.7}>
               <Text style={styles.editDedicationText}>עריכה</Text>
             </TouchableOpacity>
           </View>
@@ -351,6 +354,55 @@ export const HistoryScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* DEDICATION EDIT MODAL */}
+      <Modal
+        visible={isDedicationModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setIsDedicationModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>עריכת שם ההקדשה</Text>
+              <TouchableOpacity
+                onPress={() => setIsDedicationModalVisible(false)}
+                style={styles.modalCloseBtn}
+              >
+                <X size={20} color={Colors.onSurfaceVariant} />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.modalSubtitle}>הזן שם מלא (לדוגמה: יוסף בן רחל):</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={tempDedicationName}
+              onChangeText={setTempDedicationName}
+              placeholder="הזן שם כאן..."
+              placeholderTextColor={Colors.outline}
+              textAlign="right"
+              autoFocus={true}
+            />
+
+            <View style={styles.modalActions}>
+              <TouchableOpacity
+                onPress={saveDedicationName}
+                style={styles.modalSaveBtn}
+                activeOpacity={0.88}
+              >
+                <Text style={styles.modalSaveText}>שמור הקדשה ✓</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setIsDedicationModalVisible(false)}
+                style={styles.modalCancelBtn}
+              >
+                <Text style={styles.modalCancelText}>ביטול</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
@@ -768,5 +820,82 @@ const styles = StyleSheet.create({
   },
   pillTextActive: {
     color: '#FFFFFF',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(15, 23, 42, 0.65)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+  modalContent: {
+    backgroundColor: Colors.surface,
+    borderRadius: 20,
+    padding: 24,
+    width: '100%',
+    maxWidth: 420,
+    ...Shadows.card,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  modalHeader: {
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+  modalTitle: {
+    fontFamily: 'Rubik_700Bold',
+    fontSize: 18,
+    color: Colors.primary,
+    ...RTL.textRight,
+  },
+  modalCloseBtn: {
+    padding: 4,
+  },
+  modalSubtitle: {
+    fontFamily: 'NotoSans_500Medium',
+    fontSize: 13,
+    color: Colors.onSurfaceVariant,
+    ...RTL.textRight,
+    marginBottom: 10,
+  },
+  modalInput: {
+    backgroundColor: Colors.surfaceContainerLow,
+    borderWidth: 1.5,
+    borderColor: Colors.border,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontFamily: 'NotoSans_500Medium',
+    fontSize: 15,
+    color: Colors.onSurface,
+    marginBottom: 20,
+  },
+  modalActions: {
+    gap: 8,
+  },
+  modalSaveBtn: {
+    backgroundColor: Colors.primary,
+    paddingVertical: 13,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Shadows.card,
+  },
+  modalSaveText: {
+    fontFamily: 'Rubik_600SemiBold',
+    fontSize: 15,
+    color: '#FFFFFF',
+  },
+  modalCancelBtn: {
+    paddingVertical: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalCancelText: {
+    fontFamily: 'NotoSans_500Medium',
+    fontSize: 13,
+    color: Colors.onSurfaceVariant,
   },
 });
