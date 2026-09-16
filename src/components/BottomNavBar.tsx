@@ -61,15 +61,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 10,
+    ...RTL.container,
   },
   navBar: {
-    flexDirection: RTL.row, // Dynamic RTL Support
+    flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     maxWidth: 540,
     width: '100%',
     alignSelf: 'center',
     paddingHorizontal: 12,
+    ...RTL.container,
   },
   tabItem: {
     flexDirection: 'column',

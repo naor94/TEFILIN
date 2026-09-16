@@ -29,6 +29,8 @@ import { BlessingsScreen } from './src/screens/BlessingsScreen';
 import { RemindersScreen } from './src/screens/RemindersScreen';
 import { HistoryScreen } from './src/screens/HistoryScreen';
 
+import { RTL } from './src/theme/layout';
+
 // הפעלת תמיכה מימין לשמאל (RTL) כברירת מחדל
 try {
   I18nManager.allowRTL(true);
@@ -60,7 +62,7 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, RTL.container]}>
       <StatusBar barStyle="dark-content" backgroundColor={Colors.surface} />
       
       {/* HEADER BAR */}
@@ -71,7 +73,7 @@ export default function App() {
       />
 
       {/* SCREEN CONTAINER */}
-      <View style={styles.screenContainer}>
+      <View style={[styles.screenContainer, RTL.container]}>
         {activeTab === 'today' && (
           <TodayScreen onNavigate={(tab) => setActiveTab(tab)} />
         )}
@@ -95,6 +97,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: Colors.background,
+    ...RTL.container,
   },
   loadingContainer: {
     flex: 1,
@@ -104,5 +107,6 @@ const styles = StyleSheet.create({
   },
   screenContainer: {
     flex: 1,
+    ...RTL.container,
   },
 });

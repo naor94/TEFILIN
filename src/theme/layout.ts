@@ -1,18 +1,21 @@
 import { I18nManager, TextStyle, ViewStyle } from 'react-native';
 
-export const isRTL = I18nManager.isRTL;
-
 export const RTL = {
-  // שורה הזורמת תמיד מימין לשמאל, ללא תלות בשפת מערכת ההפעלה
-  row: (isRTL ? 'row' : 'row-reverse') as 'row' | 'row-reverse',
-  
-  // יישור לצד ימין (ההתחלה בעברית)
-  alignRight: (isRTL ? 'flex-start' : 'flex-end') as 'flex-start' | 'flex-end',
-  
-  // יישור לצד שמאל
-  alignLeft: (isRTL ? 'flex-end' : 'flex-start') as 'flex-start' | 'flex-end',
-  
-  // יישור טקסט וכיוון כתיבה
+  // סגנון מעטפת RTL מחייב עבור Yoga Layout Engine
+  container: {
+    direction: 'rtl' as const,
+  } as ViewStyle,
+
+  // שורות זורמות מימין לשמאל
+  row: 'row' as const,
+
+  // יישור לימין (בתוך direction: 'rtl', ההתחלה היא בימין)
+  alignRight: 'flex-start' as const,
+
+  // יישור לשמאל (בתוך direction: 'rtl', הסוף הוא בשמאל)
+  alignLeft: 'flex-end' as const,
+
+  // יישור טקסט וכיוון כתיבה עברי
   textRight: {
     textAlign: 'right' as TextStyle['textAlign'],
     writingDirection: 'rtl' as TextStyle['writingDirection'],
@@ -22,3 +25,4 @@ export const RTL = {
     writingDirection: 'rtl' as TextStyle['writingDirection'],
   },
 };
+

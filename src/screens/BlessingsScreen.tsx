@@ -343,9 +343,11 @@ const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
     backgroundColor: Colors.background,
+    ...RTL.container,
   },
   container: {
     flex: 1,
+    ...RTL.container,
   },
   content: {
     paddingHorizontal: 20,
@@ -355,6 +357,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     gap: 14,
+    ...RTL.container,
   },
   topHeader: {
     flexDirection: RTL.row,

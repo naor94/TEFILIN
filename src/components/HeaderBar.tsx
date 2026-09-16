@@ -54,9 +54,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: Colors.border,
     zIndex: 40,
+    ...RTL.container,
   },
   inner: {
-    flexDirection: RTL.row,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
     maxWidth: 540,
     alignSelf: 'center',
     width: '100%',
+    ...RTL.container,
   },
   locationButton: {
     flexDirection: RTL.row,
