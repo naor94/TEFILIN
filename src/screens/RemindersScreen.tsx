@@ -29,6 +29,7 @@ import {
 import { Colors, Shadows } from '../theme/colors';
 import { RTL } from '../theme/layout';
 import { StorageService } from '../services/storageService';
+import { NotificationService } from '../services/notificationService';
 import { ReminderSettings } from '../types';
 
 export const RemindersScreen: React.FC = () => {
@@ -51,6 +52,7 @@ export const RemindersScreen: React.FC = () => {
 
   useEffect(() => {
     loadSettings();
+    NotificationService.init();
   }, []);
 
   const loadSettings = async () => {
@@ -67,14 +69,15 @@ export const RemindersScreen: React.FC = () => {
     setIsTimePickerVisible(true);
   };
 
-  const savePickedTime = () => {
+  const savePickedTime = async () => {
     const h = pickerHours.toString().padStart(2, '0');
     const m = pickerMinutes.toString().padStart(2, '0');
     const newTime = `${h}:${m}`;
     const updated = { ...settings, morningTime: newTime };
     setSettings(updated);
     setIsTimePickerVisible(false);
-    StorageService.saveReminderSettings(updated);
+    await StorageService.saveReminderSettings(updated);
+    await NotificationService.scheduleReminders(updated);
   };
 
   const adjustHours = (delta: number) => {
@@ -151,8 +154,16 @@ export const RemindersScreen: React.FC = () => {
 
   const handleSave = async () => {
     await StorageService.saveReminderSettings(settings);
+    const scheduled = await NotificationService.scheduleReminders(settings);
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
+
+    if (!scheduled && settings.morningEnabled) {
+      Alert.alert(
+        'הרשאת התראות נדרשת',
+        'על מנת שתוכל לקבל את התזכורת בזמן ולשמוע את הצליל, יש לאשר הרשאות התראה בהגדרות הטלפון.'
+      );
+    }
   };
 
   const days = [
@@ -406,6 +417,31 @@ export const RemindersScreen: React.FC = () => {
           <CheckCircle2 size={20} color="#FFFFFF" />
           <Text style={styles.saveButtonText}>
             {savedSuccess ? 'ההגדרות נשמרו בהצלחה! ✓' : 'שמירת הגדרות'}
+          </Text>
+        </TouchableOpacity>
+
+        {/* Instant Sound Test Button */}
+        <TouchableOpacity
+          style={styles.testButton}
+          activeOpacity={0.8}
+          onPress={async () => {
+            const ok = await NotificationService.triggerTestNotification();
+            if (ok) {
+              Alert.alert(
+                'בדיקת צליל והתראה נשלחה! 🔔',
+                'ההתראה תופיע בעוד 2 שניות במכשיר עם צליל ורטט.\n\nשים לב: ודא שהטלפון אינו במצב "שקט" או "נא לא להפריע".'
+              );
+            } else {
+              Alert.alert(
+                'הרשאת התראות נדרשת',
+                'יש לאשר הרשאות התראה בהגדרות הטלפון כדי לשמוע את הצליל.'
+              );
+            }
+          }}
+        >
+          <Volume2 size={18} color={Colors.primary} />
+          <Text style={styles.testButtonText}>
+            בדיקת צליל והתראה במכשיר (השמעה עכשיו)
           </Text>
         </TouchableOpacity>
       </View>
@@ -1000,5 +1036,22 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_500Medium',
     fontSize: 13,
     color: Colors.onSurfaceVariant,
+  },
+  testButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: Colors.surfaceContainerHigh,
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    marginTop: 10,
+  },
+  testButtonText: {
+    fontFamily: 'NotoSans_600SemiBold',
+    fontSize: 13.5,
+    color: Colors.primary,
   },
 });

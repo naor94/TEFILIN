@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   I18nManager,
@@ -28,6 +28,7 @@ import { TodayScreen } from './src/screens/TodayScreen';
 import { BlessingsScreen } from './src/screens/BlessingsScreen';
 import { RemindersScreen } from './src/screens/RemindersScreen';
 import { HistoryScreen } from './src/screens/HistoryScreen';
+import { NotificationService } from './src/services/notificationService';
 
 import { RTL } from './src/theme/layout';
 
@@ -41,6 +42,10 @@ try {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabKey>('today');
+
+  useEffect(() => {
+    NotificationService.init();
+  }, []);
 
   const [fontsLoaded] = useFonts({
     Rubik_400Regular,
